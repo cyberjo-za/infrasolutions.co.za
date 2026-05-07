@@ -169,6 +169,8 @@ nav {
 }
 .btn-primary:hover { box-shadow: 0 0 30px rgba(101,21,255,0.5); transform: translateY(-2px); }
 .btn-outline {
+  background: transparent;
+  cursor: pointer;
   border: 1px solid var(--cyan);
   color: var(--cyan);
   padding: 0.9rem 2.2rem;
