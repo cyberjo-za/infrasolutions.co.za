@@ -105,8 +105,6 @@ async def media(file_id: str, request: Request, env=None):
         return StreamingResponse(iter([resp.content]), media_type=content_type)
 
 from workers import WorkerEntrypoint
-import asgi
-
 class Default(WorkerEntrypoint):
     async def fetch(self, request):
         return await asgi.fetch(app, request, self.env)

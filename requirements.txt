@@ -1,4 +1,2 @@
 fastapi
 httpx
-uvicorn
-asgi-cycle
