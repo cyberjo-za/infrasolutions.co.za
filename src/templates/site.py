@@ -699,10 +699,25 @@ footer {
       <div style="color:var(--muted);font-family:'Share Tech Mono',monospace;font-size:0.85rem;">Announcements from Telegram</div>
       <button id="offers-refresh" class="btn-outline">Refresh</button>
     </div>
-    <div id="offers-grid" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px;">
+    <div id="offers-grid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;">
       <!-- images injected here -->
     </div>
   </div>
+  <style>
+    .offer-img-wrapper {
+      background: var(--card-bg);
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      overflow: hidden;
+    }
+    .offer-img-wrapper img {
+      display: block;
+      width: 100%;
+      aspect-ratio: 3 / 2;
+      object-fit: contain;
+      background: var(--dark3);
+    }
+  </style>
   <script>
     async function loadOffers(){
       try{
@@ -714,7 +729,7 @@ footer {
           grid.innerHTML = '<div style="color:var(--muted);padding:1rem;">No recent offers found.</div>';
           return;
         }
-        grid.innerHTML = data.photos.map(u=>`<div style="background:var(--card-bg);padding:8px;border-radius:8px;border:1px solid var(--border)"><img src="${u}" style="width:100%;height:220px;object-fit:cover;border-radius:6px"></div>`).join('');
+        grid.innerHTML = data.photos.slice(0,6).map(u=>`<div class="offer-img-wrapper"><img src="${u}" alt="" loading="lazy"></div>`).join('');
       }catch(e){
         console.error(e);
       }
