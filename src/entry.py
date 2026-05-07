@@ -1,6 +1,6 @@
 import json
 from urllib.parse import urlparse
-from workers import WorkerEntrypoint, Response, fetch
+from workers import WorkerEntrypoint
 
 from templates.site import TEMPLATE
 
