@@ -1,6 +1,7 @@
 name = "infrasolutions"
 main = "src/entry.py"
 compatibility_date = "2026-05-07"
+compatibility_flags = ["python_workers"]
 
 # Add your Cloudflare account_id and other fields before publishing.
 # Bind a KV namespace for image index if you want persistent caching in Cloudflare.
