@@ -1,6 +1,7 @@
 import json
 from urllib.parse import urlparse
-from workers import WorkerEntrypoint
+from js import fetch, Uint8Array
+from workers import WorkerEntrypoint, Response
 
 from templates.site import TEMPLATE
 
@@ -87,5 +88,6 @@ class Default(WorkerEntrypoint):
             return Response("Failed to download file", status=502)
 
         content_type = dl_resp.headers.get("content-type", "application/octet-stream")
-        body = await dl_resp.bytes()
+        buffer = await dl_resp.arrayBuffer()
+        body = bytes(Uint8Array.new(buffer))
         return Response(body, headers={"Content-Type": content_type})
