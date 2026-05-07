@@ -104,7 +104,9 @@ async def media(file_id: str, request: Request, env=None):
         content_type = resp.headers.get("Content-Type", "application/octet-stream")
         return StreamingResponse(iter([resp.content]), media_type=content_type)
 
-# Cloudflare entry point bridge
-async def fetch(request, env, ctx):
-    from workers.asgi import fetch as asgi_fetch
-    return await asgi_fetch(app, request, env, ctx)
+from workers import WorkerEntrypoint
+import asgi
+
+class Default(WorkerEntrypoint):
+    async def fetch(self, request):
+        return await asgi.fetch(app, request, self.env)

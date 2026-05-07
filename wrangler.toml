@@ -1,5 +1,5 @@
 name = "infrasolutions"
-main = "src/entry"
+main = "src/entry.py"
 compatibility_date = "2026-05-07"
 compatibility_flags = ["python_workers"]
 
