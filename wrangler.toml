@@ -1,0 +1,13 @@
+name = "infrasolutions"
+main = "src.entry"
+compatibility_date = "2026-05-07"
+
+# Add your Cloudflare account_id and other fields before publishing.
+# Bind a KV namespace for image index if you want persistent caching in Cloudflare.
+
+[vars]
+# TELEGRAM_TOKEN = "set_via_wrangler_secret_or_env"
+
+[[kv_namespaces]]
+binding = "IMAGES_KV"
+id = "__KV_NAMESPACE_ID__"
