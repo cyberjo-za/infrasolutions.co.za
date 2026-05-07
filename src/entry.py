@@ -1,7 +1,6 @@
 import json
 from urllib.parse import urlparse
 from js import console, fetch, Uint8Array
-from pyodide.ffi import to_py as js2py
 from workers import WorkerEntrypoint, Response
 
 from templates.site import TEMPLATE
@@ -47,7 +46,7 @@ class Default(WorkerEntrypoint):
             tg_resp = await fetch(
                 f"https://api.telegram.org/bot{token}/getUpdates"
             )
-            data = js2py(await tg_resp.json())
+            data = json.loads(await tg_resp.text())
 
             file_ids = []
             for item in data.get("result", []):
@@ -83,7 +82,7 @@ class Default(WorkerEntrypoint):
             if info_resp.status != 200:
                 return Response("Failed to get file info", status=502)
 
-            info = js2py(await info_resp.json())
+            info = json.loads(await info_resp.text())
             file_path = info.get("result", {}).get("file_path")
             if not file_path:
                 return Response("File not found", status=404)
