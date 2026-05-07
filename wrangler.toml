@@ -1,6 +1,7 @@
 name = "infrasolutions"
-main = "src.entry"
+main = "src/entry"
 compatibility_date = "2026-05-07"
+compatibility_flags = ["python_workers"]
 
 # Add your Cloudflare account_id and other fields before publishing.
 # Bind a KV namespace for image index if you want persistent caching in Cloudflare.
@@ -10,4 +11,4 @@ compatibility_date = "2026-05-07"
 
 [[kv_namespaces]]
 binding = "IMAGES_KV"
-id = "__KV_NAMESPACE_ID__"
+id = "5e2acbfc7c924915b97881636c4a3a43"
