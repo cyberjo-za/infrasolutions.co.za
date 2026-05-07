@@ -687,21 +687,25 @@ footer {
   </div>
 </section>
 
-<!-- Latest offers / notices gallery (pulled from Telegram) -->
+<!-- Latest offers / notices gallery -->
 <section id="offers" style="background:var(--dark2);">
   <div class="services-header reveal">
     <div class="section-label">// Latest Offers &amp; Notices</div>
-    <h2 class="section-title">Our <span class="accent">Latest Offers</span> &amp; Notices</h2>
-    <p class="section-desc">Photos posted to our Telegram group are displayed here as announcements and offers. Click refresh to load the newest items.</p>
+    <h2 class="section-title">Our <span class="accent">Latest Work</span> &amp; Offers</h2>
+    <p class="section-desc">Browse our latest installations, projects, and special offers. Click any image to view it full-size.</p>
   </div>
   <div style="max-width:1100px;margin:0 auto;padding:1.5rem;">
     <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem;">
-      <div style="color:var(--muted);font-family:'Share Tech Mono',monospace;font-size:0.85rem;">Announcements from Telegram</div>
+      <div style="color:var(--muted);font-family:'Share Tech Mono',monospace;font-size:0.85rem;">Recent projects &amp; notices</div>
       <button id="offers-refresh" class="btn-outline">Refresh</button>
     </div>
     <div id="offers-grid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;">
       <!-- images injected here -->
     </div>
+  </div>
+  <div id="offer-modal" style="display:none;position:fixed;inset:0;z-index:9999;background:rgba(0,0,0,0.92);justify-content:center;align-items:center;cursor:zoom-out;">
+    <button id="modal-close" style="position:fixed;top:1.5rem;right:2rem;background:none;border:none;color:#fff;font-size:2.5rem;cursor:pointer;z-index:10000;line-height:1;">&times;</button>
+    <img id="modal-img" style="max-width:92vw;max-height:92vh;object-fit:contain;border-radius:8px;box-shadow:0 0 40px rgba(0,0,0,0.6);">
   </div>
   <style>
     .offer-img-wrapper {
@@ -709,6 +713,12 @@ footer {
       border-radius: 8px;
       border: 1px solid var(--border);
       overflow: hidden;
+      cursor: pointer;
+      transition: border-color 0.3s, box-shadow 0.3s;
+    }
+    .offer-img-wrapper:hover {
+      border-color: var(--cyan);
+      box-shadow: var(--glow-cyan);
     }
     .offer-img-wrapper img {
       display: block;
@@ -716,9 +726,29 @@ footer {
       aspect-ratio: 3 / 2;
       object-fit: contain;
       background: var(--dark3);
+      pointer-events: none;
     }
   </style>
   <script>
+    function openModal(src) {
+      const modal = document.getElementById('offer-modal');
+      document.getElementById('modal-img').src = src;
+      modal.style.display = 'flex';
+      document.body.style.overflow = 'hidden';
+    }
+    function closeModal() {
+      const modal = document.getElementById('offer-modal');
+      modal.style.display = 'none';
+      document.body.style.overflow = '';
+    }
+    document.getElementById('modal-close').addEventListener('click', closeModal);
+    document.getElementById('offer-modal').addEventListener('click', function(e) {
+      if (e.target === this) closeModal();
+    });
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape') closeModal();
+    });
+
     async function loadOffers(){
       try{
         const res = await fetch('/api/photos');
@@ -729,13 +759,12 @@ footer {
           grid.innerHTML = '<div style="color:var(--muted);padding:1rem;">No recent offers found.</div>';
           return;
         }
-        grid.innerHTML = data.photos.slice(0,6).map(u=>`<div class="offer-img-wrapper"><img src="${u}" alt="" loading="lazy"></div>`).join('');
+        grid.innerHTML = data.photos.slice(0,6).map(u=>`<div class="offer-img-wrapper" onclick="openModal('${u}')"><img src="${u}" alt="" loading="lazy"></div>`).join('');
       }catch(e){
         console.error(e);
       }
     }
     document.getElementById('offers-refresh').addEventListener('click', loadOffers);
-    // load on visible
     document.addEventListener('DOMContentLoaded', loadOffers);
   </script>
 </section>
@@ -884,14 +913,25 @@ footer {
       <h2 class="section-title reveal">Request Your<br><span class="accent">Free Quote</span></h2>
       <p class="section-desc reveal">Ready to secure your property? Contact us today for a no-obligation consultation and quotation.</p>
       <div class="contact-cards reveal">
-        <a href="tel:+27000000000" class="contact-card">
-          <span class="cc-icon">📱</span>
+        <a href="tel:+27603520517" class="contact-card">
+          <span class="cc-icon">📞</span>
           <div>
-            <span class="cc-label">Call or WhatsApp</span>
+            <span class="cc-label">Call Us</span>
             <span class="cc-value">+27 60 352 0517</span>
           </div>
         </a>
-        <a href="mailto:info@infracoresolutions.co.za" class="contact-card">
+        <a href="https://wa.me/27603520517" target="_blank" rel="noopener" class="contact-card">
+          <span class="cc-icon">
+            <svg viewBox="0 0 24 24" width="20" height="20" fill="#25D366" style="display:block;">
+              <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+            </svg>
+          </span>
+          <div>
+            <span class="cc-label">WhatsApp</span>
+            <span class="cc-value">+27 60 352 0517</span>
+          </div>
+        </a>
+        <a href="mailto:info@infrasolutions.co.za" class="contact-card">
           <span class="cc-icon">✉️</span>
           <div>
             <span class="cc-label">Email Us</span>
