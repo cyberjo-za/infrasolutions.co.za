@@ -1,3 +1,5 @@
+import TEMPLATE from './templates_infracore_html.js';
+
 export default {
   async fetch(request, env) {
     const url = new URL(request.url);
@@ -5,12 +7,19 @@ export default {
 
     // Serve the HTML template at /
     if (path === "/") {
+      // Try to fetch the bundled template; if that fails, fall back to the embedded TEMPLATE.
       try {
-        const tpl = await (await fetch(new URL('./templates/infracore.html', import.meta.url))).text();
-        return new Response(tpl, { headers: { 'Content-Type': 'text/html; charset=utf-8' } });
+        const tplUrl = new URL('./templates/infracore.html', import.meta.url);
+        const resp = await fetch(tplUrl);
+        if (resp.ok) {
+          const tpl = await resp.text();
+          return new Response(tpl, { headers: { 'Content-Type': 'text/html; charset=utf-8' } });
+        }
       } catch (e) {
-        return new Response('Template not found: ' + e.message, { status: 500 });
+        // ignore and use fallback
       }
+      // fallback to embedded template
+      return new Response(TEMPLATE, { headers: { 'Content-Type': 'text/html; charset=utf-8' } });
     }
 
     // API: list photos
