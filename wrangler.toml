@@ -12,3 +12,7 @@ compatibility_flags = ["python_workers", "disable_python_external_sdk"]
 [[kv_namespaces]]
 binding = "IMAGES_KV"
 id = "5e2acbfc7c924915b97881636c4a3a43"
+
+[[r2_buckets]]
+binding = "IMAGES_BUCKET"
+bucket_name = "infracore"

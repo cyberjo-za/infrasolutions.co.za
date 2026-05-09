@@ -52,8 +52,7 @@ class Default(WorkerEntrypoint):
             for item in data.get("result", []):
                 msg = item.get("channel_post") or item.get("message") or {}
                 if "photo" in msg:
-                    photos = msg["photo"]
-                    file_ids.append(photos[-1]["file_id"])
+                    file_ids.append(msg["photo"][-1]["file_id"])
 
             new = False
             for fid in file_ids:
@@ -72,6 +71,16 @@ class Default(WorkerEntrypoint):
 
     async def _media(self, file_id):
         try:
+            bucket = getattr(self.env, "IMAGES_BUCKET", None)
+
+            if bucket:
+                obj = await bucket.get(file_id)
+                if obj:
+                    body = await obj.arrayBuffer()
+                    body = bytes(Uint8Array.new(body))
+                    ct = obj.httpMetadata.contentType or "application/octet-stream"
+                    return Response(body, headers={"Content-Type": ct})
+
             token = getattr(self.env, "TELEGRAM_TOKEN", None)
             if not token:
                 return Response("Telegram token not configured", status=500)
@@ -96,6 +105,11 @@ class Default(WorkerEntrypoint):
             content_type = dl_resp.headers.get("content-type", "application/octet-stream")
             buffer = await dl_resp.arrayBuffer()
             body = bytes(Uint8Array.new(buffer))
+
+            if bucket:
+                from js import Object
+                await bucket.put(file_id, body, httpMetadata=Object.fromEntries([["contentType", content_type]]))
+
             return Response(body, headers={"Content-Type": content_type})
         except Exception as e:
             console.log(f"Error in _media: {e}")
