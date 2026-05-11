@@ -114,8 +114,7 @@ class Default(WorkerEntrypoint):
             # Save to R2 cache (best effort — don't block response on failure)
             try:
                 if bucket:
-                    from js import Object
-                    await bucket.put(file_id, body, httpMetadata=Object.fromEntries([["contentType", content_type]]))
+                    await bucket.put(file_id, body, httpMetadata={"contentType": content_type})
             except Exception as e:
                 console.log(f"R2 put error (non-fatal): {e}")
 
