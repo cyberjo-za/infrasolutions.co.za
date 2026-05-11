@@ -70,17 +70,22 @@ class Default(WorkerEntrypoint):
             return Response(str(e), status=500)
 
     async def _media(self, file_id):
+        # Try R2 cache first — failures here fall through to Telegram
         try:
             bucket = getattr(self.env, "IMAGES_BUCKET", None)
-
             if bucket:
                 obj = await bucket.get(file_id)
-                if obj:
-                    body = await obj.arrayBuffer()
-                    body = bytes(Uint8Array.new(body))
-                    ct = obj.httpMetadata.contentType or "application/octet-stream"
-                    return Response(body, headers={"Content-Type": ct})
+                if obj and obj.body:
+                    ct = "application/octet-stream"
+                    try:
+                        ct = obj.httpMetadata.contentType or ct
+                    except Exception:
+                        pass
+                    return Response(obj.body, headers={"Content-Type": ct})
+        except Exception as e:
+            console.log(f"R2 get error (falling back to Telegram): {e}")
 
+        try:
             token = getattr(self.env, "TELEGRAM_TOKEN", None)
             if not token:
                 return Response("Telegram token not configured", status=500)
@@ -106,9 +111,13 @@ class Default(WorkerEntrypoint):
             buffer = await dl_resp.arrayBuffer()
             body = bytes(Uint8Array.new(buffer))
 
-            if bucket:
-                from js import Object
-                await bucket.put(file_id, body, httpMetadata=Object.fromEntries([["contentType", content_type]]))
+            # Save to R2 cache (best effort — don't block response on failure)
+            try:
+                if bucket:
+                    from js import Object
+                    await bucket.put(file_id, body, httpMetadata=Object.fromEntries([["contentType", content_type]]))
+            except Exception as e:
+                console.log(f"R2 put error (non-fatal): {e}")
 
             return Response(body, headers={"Content-Type": content_type})
         except Exception as e:
