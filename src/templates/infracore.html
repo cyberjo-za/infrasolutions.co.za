@@ -82,7 +82,10 @@ nav {
   padding: 0.5rem 1.3rem;
   border-radius: 4px;
   font-size: 0.8rem !important;
+  font-family: 'Rajdhani', sans-serif;
   letter-spacing: 0.15em;
+  text-decoration: none;
+  text-transform: uppercase;
   transition: box-shadow 0.3s !important;
 }
 .nav-cta:hover { box-shadow: var(--glow-purple) !important; }
@@ -325,6 +328,9 @@ section {
   overflow: hidden;
   transition: background 0.35s;
   cursor: default;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 .service-card::before {
   content: '';
@@ -349,17 +355,6 @@ section {
   color: var(--white);
 }
 .service-card p { color: var(--muted); font-size: 0.9rem; line-height: 1.7; font-weight: 300; }
-.service-tag {
-  display: inline-block;
-  margin-top: 1rem;
-  font-family: 'Share Tech Mono', monospace;
-  font-size: 0.65rem;
-  color: var(--cyan);
-  border: 1px solid rgba(0,229,255,0.25);
-  padding: 0.2rem 0.6rem;
-  border-radius: 3px;
-  letter-spacing: 0.1em;
-}
 #why { background: var(--dark); }
 .why-inner {
   max-width: 1100px;
@@ -429,26 +424,13 @@ section {
   margin: 0 auto;
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: center;
+  text-align: center;
   flex-wrap: wrap;
   gap: 2rem;
 }
 .compliance-text h3 { font-family: 'Rajdhani', sans-serif; font-weight: 700; font-size: 1.5rem; letter-spacing: 0.05em; }
-.compliance-text p { color: var(--muted); font-size: 0.9rem; margin-top: 0.3rem; max-width: 450px; }
-.cert-badges { display: flex; gap: 1rem; flex-wrap: wrap; }
-.cert-badge {
-  border: 1px solid var(--cyan);
-  border-radius: 6px;
-  padding: 0.7rem 1.3rem;
-  font-family: 'Share Tech Mono', monospace;
-  font-size: 0.78rem;
-  color: var(--cyan);
-  letter-spacing: 0.12em;
-  background: rgba(0,229,255,0.06);
-  box-shadow: var(--glow-cyan);
-  text-align: center;
-}
-.cert-badge span { display: block; font-size: 0.6rem; color: var(--muted); letter-spacing: 0.08em; margin-top: 0.2rem; }
+.compliance-text p { color: var(--muted); font-size: 0.9rem; margin-top: 0.3rem; max-width: 450px; margin-inline: auto; }
 #process { background: var(--dark2); }
 .process-header { max-width: 1100px; margin: 0 auto 3rem; text-align: center; }
 .process-header .section-desc { margin: 0.8rem auto 0; }
@@ -750,37 +732,31 @@ footer {
       <span class="service-icon">📷</span>
       <h3>CCTV Systems</h3>
       <p>HD and IP camera systems for 24/7 property surveillance. Remote viewing, motion alerts, and cloud storage options for homes and businesses.</p>
-      <span class="service-tag">RESIDENTIAL &amp; COMMERCIAL</span>
     </div>
     <div class="service-card">
       <span class="service-icon">🌐</span>
       <h3>Fibre Installation</h3>
       <p>Structured fibre-optic cabling for ultra-fast, reliable connectivity. FTTH, LAN and backbone installations to keep you connected at full speed.</p>
-      <span class="service-tag">HIGH-SPEED CONNECTIVITY</span>
     </div>
     <div class="service-card">
       <span class="service-icon">🚪</span>
       <h3>Gate Motor Installation</h3>
       <p>Sliding and swing gate motors from leading brands, including intercoms, access control and remote management for ultimate convenience and security.</p>
-      <span class="service-tag">ACCESS CONTROL</span>
     </div>
     <div class="service-card">
       <span class="service-icon">🏡</span>
       <h3>Smart Home Systems</h3>
       <p>Automate lighting, climate, security and entertainment. Centralised control via smartphone or voice command &mdash; your home, intelligently connected.</p>
-      <span class="service-tag">HOME AUTOMATION</span>
     </div>
     <div class="service-card">
       <span class="service-icon">⚡</span>
       <h3>Electric Fencing</h3>
       <p>SANS 10222-compliant electric fence installations and energiser setups. Effective perimeter protection for residential estates and commercial properties.</p>
-      <span class="service-tag">PERIMETER SECURITY</span>
     </div>
-    <div class="service-card" style="display:flex;flex-direction:column;justify-content:center;background:linear-gradient(135deg,rgba(21,101,255,0.12),rgba(156,39,255,0.12));">
+    <div class="service-card">
       <span class="service-icon">🔧</span>
       <h3>Maintenance &amp; Support</h3>
       <p>Ongoing maintenance contracts, fault-finding, upgrades and emergency call-outs. We service what we install &mdash; and everything else too.</p>
-      <span class="service-tag">ONGOING SUPPORT</span>
     </div>
   </div>
 </section>
@@ -872,12 +848,6 @@ footer {
     <div class="compliance-text">
       <h3>Certified. Compliant. Trusted.</h3>
       <p>We hold all relevant industry certifications and operate in full compliance with South African National Standards (SANS). When you choose Infracore, you choose accountability.</p>
-    </div>
-    <div class="cert-badges">
-      <div class="cert-badge">SANS 10222<span>Electric Fencing</span></div>
-      <div class="cert-badge">PSIRA<span>Registered</span></div>
-      <div class="cert-badge">CETA<span>Accredited</span></div>
-      <div class="cert-badge">SAIDSA<span>Member</span></div>
     </div>
   </div>
 </div>
